@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="academia_examenes.PanelCalificacion">
+        <div class="p-4">
+            <div t-if="state.cargando">Cargando examen...</div>
+            <div t-else="">
+
+                <div class="d-flex align-items-center mb-4">
+                    <img t-if="state.alumno.foto"
+                        t-att-src="'data:image/png;base64,' + state.alumno.foto"
+                        class="rounded-circle me-3"
+                        style="width: 90px; height: 90px; object-fit: cover;"/>
+                    <div t-else=""
+                        class="rounded-circle bg-light d-flex align-items-center justify-content-center me-3 border"
+                        style="width: 90px; height: 90px;">
+                        <i class="fa fa-user fa-2x text-muted"/>
+                    </div>
+                    <div class="flex-grow-1">
+                        <div class="d-flex align-items-center">
+                            <h2 class="mb-0" t-esc="state.alumno.name"/>
+                            <span t-if="state.mensajeGuardado" class="ms-3"
+                                style="color:#28a745; font-size:0.9rem; font-weight:600;">✓ Guardado</span>
+                        </div>
+                        <div class="text-muted mb-2">
+                            <span t-esc="state.disciplina"/>
+                            <span class="mx-2">|</span>
+                            <span>Nivel evaluado: <t t-esc="state.nivelEvaluado or '—'"/></span>
+                        </div>
+                        <div class="d-flex flex-wrap align-items-center" style="gap: 12px;">
+                            <button t-foreach="state.opcionesResultado" t-as="opcion" t-key="opcion.valor"
+                                type="button"
+                                t-att-class="'btn ' + (state.resultado === opcion.valor ? 'btn-primary' : 'btn-outline-secondary')"
+                                t-on-click="() => this.marcarResultado(opcion.valor)"
+                                t-esc="opcion.etiqueta"/>
+                            <button t-if="state.usaMejorExamen" type="button"
+                                t-att-class="'btn ' + (state.mejorExamen ? 'btn-warning' : 'btn-outline-secondary')"
+                                t-on-click="() => this.alternarMejorExamen()">★ Mejor Examen</button>
+                            <div class="d-flex align-items-center ms-2">
+                                <label class="me-2 mb-0 text-muted">Calificación final</label>
+                                <input type="number" class="form-control form-control-sm" style="width: 120px;"
+                                    t-model="state.calificacionFinalManual"
+                                    t-on-change="() => this.guardarCalificacionFinal()"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div t-foreach="state.grupos" t-as="grupo" t-key="grupo.id" class="mb-4">
+                    <h4 class="border-bottom pb-1" t-esc="grupo.nombre"/>
+
+                    <div t-foreach="grupo.criterios" t-as="criterio" t-key="criterio.criterioPlantillaId"
+                        class="card mb-2">
+                        <div class="card-body">
+                            <h6 t-esc="criterio.nombre"/>
+
+                            <div t-if="criterio.tipoEscala === 'cualitativa'"
+                                class="d-flex flex-wrap mb-2" style="gap: 10px;">
+                                <button t-foreach="criterio.opciones" t-as="opcion" t-key="opcion"
+                                    type="button"
+                                    t-att-class="'btn ' + (criterio.valorCualitativo === opcion ? 'btn-primary' : 'btn-outline-secondary')"
+                                    t-on-click="() => this.calificarCualitativo(criterio, opcion)"
+                                    t-esc="opcion"/>
+                                <span t-if="!criterio.opciones.length" class="text-danger small">
+                                    Este criterio cualitativo no tiene opciones configuradas en la plantilla.
+                                </span>
+                            </div>
+
+                            <div t-if="criterio.tipoEscala === 'numerica'" class="mb-2">
+                                <input type="number" class="form-control" style="max-width: 200px;"
+                                    t-att-min="criterio.escalaMin"
+                                    t-att-max="criterio.escalaMax"
+                                    t-att-step="criterio.escalaIncremento or 'any'"
+                                    t-model="criterio.valorNumerico"
+                                    t-on-change="() => this.calificarNumerico(criterio)"/>
+                                <div class="text-muted small">
+                                    Rango <t t-esc="criterio.escalaMin"/> – <t t-esc="criterio.escalaMax"/>
+                                    <t t-if="criterio.escalaIncremento">, incremento <t t-esc="criterio.escalaIncremento"/></t>
+                                </div>
+                            </div>
+
+                            <textarea t-if="criterio.permiteComentario"
+                                class="form-control" rows="2"
+                                placeholder="Comentario del sinodal (opcional)..."
+                                t-model="criterio.comentario"
+                                t-on-blur="() => this.guardarComentario(criterio)"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h6>Notas generales del sinodal</h6>
+                        <textarea class="form-control" rows="2"
+                            placeholder="Observaciones generales sobre el examen completo..."
+                            t-model="state.notasSinodal"
+                            t-on-blur="() => this.guardarNotasSinodal()"/>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </t>
+</templates>

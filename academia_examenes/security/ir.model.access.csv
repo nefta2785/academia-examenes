@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_rubrica_plantilla_user,rubrica.plantilla.user,model_rubrica_plantilla,base.group_user,1,1,1,1
+access_rubrica_grupo_user,rubrica.grupo.user,model_rubrica_grupo,base.group_user,1,1,1,1
+access_rubrica_criterio_plantilla_user,rubrica.criterio_plantilla.user,model_rubrica_criterio_plantilla,base.group_user,1,1,1,1
+access_rubrica_alumno_user,rubrica.alumno.user,model_rubrica_alumno,base.group_user,1,1,1,1
+access_rubrica_alumno_nivel_user,rubrica.alumno_nivel.user,model_rubrica_alumno_nivel,base.group_user,1,1,1,1
+access_rubrica_examen_user,rubrica.examen.user,model_rubrica_examen,base.group_user,1,1,1,1
+access_rubrica_criterio_calificado_user,rubrica.criterio_calificado.user,model_rubrica_criterio_calificado,base.group_user,1,1,1,1
+access_rubrica_evento_examen_user,rubrica.evento_examen.user,model_rubrica_evento_examen,base.group_user,1,1,1,1

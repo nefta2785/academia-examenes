@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_academia_examenes_root"
+        name="Academia Exámenes"
+        sequence="10"/>
+
+    <menuitem id="menu_rubrica_plantilla"
+        name="Plantillas de Rúbrica"
+        parent="menu_academia_examenes_root"
+        action="action_rubrica_plantilla"
+        sequence="5"/>
+
+    <menuitem id="menu_rubrica_alumno"
+        name="Alumnos"
+        parent="menu_academia_examenes_root"
+        action="action_rubrica_alumno"
+        sequence="10"/>
+
+    <menuitem id="menu_rubrica_evento_examen"
+        name="Eventos de Examen"
+        parent="menu_academia_examenes_root"
+        action="action_rubrica_evento_examen"
+        sequence="15"/>
+
+    <menuitem id="menu_rubrica_examen"
+        name="Exámenes"
+        parent="menu_academia_examenes_root"
+        action="action_rubrica_examen"
+        sequence="20"/>
+
+</odoo>

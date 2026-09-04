@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_rubrica_evento_examen_list" model="ir.ui.view">
+        <field name="name">rubrica.evento_examen.list</field>
+        <field name="model">rubrica.evento_examen</field>
+        <field name="arch" type="xml">
+            <list string="Eventos de Examen">
+                <field name="folio"/>
+                <field name="fecha_evento"/>
+                <field name="descripcion"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_rubrica_evento_examen_form" model="ir.ui.view">
+        <field name="name">rubrica.evento_examen.form</field>
+        <field name="model">rubrica.evento_examen</field>
+        <field name="arch" type="xml">
+            <form string="Evento de Examen">
+                <sheet>
+                    <button name="action_abrir_tablero" type="object"
+                        string="Abrir Tablero de Calificación"
+                        class="btn-primary mb-3"
+                        invisible="not id"/>
+                    <group>
+                        <field name="folio" readonly="1"/>
+                        <field name="fecha_evento"/>
+                        <field name="descripcion"/>
+                    </group>
+                    <notebook>
+                        <page string="Exámenes" name="examenes">
+                            <field name="examenes_ids"
+                                context="{'default_fecha_examen': fecha_evento}">
+                                <list editable="bottom">
+                                    <field name="alumno_id"/>
+                                    <field name="plantilla_id"/>
+                                    <field name="fecha_examen"/>
+                                    <field name="nivel_evaluado"/>
+                                    <field name="resultado"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_rubrica_evento_examen" model="ir.actions.act_window">
+        <field name="name">Eventos de Examen</field>
+        <field name="res_model">rubrica.evento_examen</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_rubrica_alumno_list" model="ir.ui.view">
+        <field name="name">rubrica.alumno.list</field>
+        <field name="model">rubrica.alumno</field>
+        <field name="arch" type="xml">
+            <list string="Alumnos">
+                <field name="name"/>
+                <field name="fecha_nacimiento"/>
+                <field name="edad"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_rubrica_alumno_form" model="ir.ui.view">
+        <field name="name">rubrica.alumno.form</field>
+        <field name="model">rubrica.alumno</field>
+        <field name="arch" type="xml">
+            <form string="Alumno">
+                <sheet>
+                    <field name="foto" widget="image" class="oe_avatar"/>
+                    <group>
+                        <field name="name"/>
+                        <field name="fecha_nacimiento"/>
+                        <field name="edad" readonly="1"/>
+                    </group>
+                    <notebook>
+                        <page string="Niveles por disciplina" name="niveles">
+                            <field name="nivel_ids">
+                                <list editable="bottom">
+                                    <field name="plantilla_id"/>
+                                    <field name="nivel_actual"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_rubrica_alumno" model="ir.actions.act_window">
+        <field name="name">Alumnos</field>
+        <field name="res_model">rubrica.alumno</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>
