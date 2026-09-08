@@ -12,6 +12,11 @@ class RubricaEventoExamen(models.Model):
     )
     fecha_evento = fields.Date(string='Fecha del evento', required=True)
     descripcion = fields.Char(string='Descripción')
+    activo = fields.Boolean(
+        string='Activo', default=False,
+        help='Marca este evento como el activo para la Mesa de Calificación del '
+             'Sinodal. Solo uno puede estar activo a la vez.',
+    )
     examenes_ids = fields.One2many(
         comodel_name='rubrica.examen',
         inverse_name='evento_id',
@@ -34,7 +39,21 @@ class RubricaEventoExamen(models.Model):
         for vals in vals_list:
             if vals.get('folio', 'Nuevo') == 'Nuevo':
                 vals['folio'] = self.env['ir.sequence'].next_by_code('rubrica.evento_examen')
-        return super().create(vals_list)
+        eventos = super().create(vals_list)
+        if any(vals.get('activo') for vals in vals_list):
+            self.search([
+                ('activo', '=', True),
+                ('id', 'not in', eventos.ids),
+            ]).write({'activo': False})
+        return eventos
+
+    def write(self, vals):
+        if vals.get('activo'):
+            self.search([
+                ('activo', '=', True),
+                ('id', 'not in', self.ids),
+            ]).write({'activo': False})
+        return super().write(vals)
 
     def action_abrir_tablero(self):
         self.ensure_one()
@@ -44,5 +63,28 @@ class RubricaEventoExamen(models.Model):
             'name': 'Tablero de Calificación - %s' % self.folio,
             'params': {
                 'evento_id': self.id,
+            },
+        }
+
+    @api.model
+    def action_abrir_tablero_sinodal(self):
+        evento = self.search([('activo', '=', True)], order='fecha_evento desc', limit=1)
+        if not evento:
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': 'Sin examen activo',
+                    'message': 'No hay ningún evento marcado como activo. Contacta al administrador.',
+                    'type': 'warning',
+                    'sticky': True,
+                },
+            }
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'academia_examenes.tablero_calificacion',
+            'name': 'Tablero de Calificación - %s' % evento.folio,
+            'params': {
+                'evento_id': evento.id,
             },
         }

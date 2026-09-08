@@ -9,24 +9,28 @@
         name="Plantillas de Rúbrica"
         parent="menu_academia_examenes_root"
         action="action_rubrica_plantilla"
+        groups="academia_examenes.group_examenes_instructor,academia_examenes.group_examenes_admin"
         sequence="5"/>
 
     <menuitem id="menu_rubrica_alumno"
         name="Alumnos"
         parent="menu_academia_examenes_root"
         action="action_rubrica_alumno"
+        groups="academia_examenes.group_examenes_instructor,academia_examenes.group_examenes_admin"
         sequence="10"/>
 
     <menuitem id="menu_rubrica_evento_examen"
         name="Eventos de Examen"
         parent="menu_academia_examenes_root"
         action="action_rubrica_evento_examen"
+        groups="academia_examenes.group_examenes_instructor,academia_examenes.group_examenes_admin"
         sequence="15"/>
 
     <menuitem id="menu_rubrica_examen"
         name="Exámenes"
         parent="menu_academia_examenes_root"
         action="action_rubrica_examen"
+        groups="academia_examenes.group_examenes_instructor,academia_examenes.group_examenes_admin"
         sequence="20"/>
 
 </odoo>

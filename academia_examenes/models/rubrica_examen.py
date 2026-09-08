@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from odoo.exceptions import AccessError
 
 
 class RubricaExamen(models.Model):
@@ -91,7 +92,17 @@ class RubricaExamen(models.Model):
         examenes._sincronizar_criterios_calificados()
         return examenes
 
+    CAMPOS_RESTRINGIDOS_SINODAL = {
+        'costo_examen', 'costo_sinodal', 'costo_institucion',
+    }
+
     def write(self, vals):
+        if not self.env.su and not self.env.user.has_group('academia_examenes.group_examenes_instructor'):
+            campos_bloqueados = self.CAMPOS_RESTRINGIDOS_SINODAL & set(vals.keys())
+            if campos_bloqueados:
+                raise AccessError(
+                    'No tienes permiso para modificar: %s' % ', '.join(sorted(campos_bloqueados))
+                )
         res = super().write(vals)
         # Si se reasigna la plantilla, el examen debe reflejar los criterios
         # de la nueva. Solo se AGREGAN los que falten; nunca se borra una

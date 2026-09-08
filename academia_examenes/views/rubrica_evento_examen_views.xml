@@ -26,6 +26,7 @@
                     <group>
                         <field name="folio" readonly="1"/>
                         <field name="fecha_evento"/>
+                        <field name="activo" groups="academia_examenes.group_examenes_admin"/>
                         <field name="descripcion"/>
                     </group>
                     <notebook>

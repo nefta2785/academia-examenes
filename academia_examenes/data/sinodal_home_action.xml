@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_home_sinodal" model="ir.actions.server">
+        <field name="name">Mesa del Sinodal (Home Action)</field>
+        <field name="model_id" ref="model_rubrica_evento_examen"/>
+        <field name="state">code</field>
+        <field name="group_ids" eval="[(6, 0, [
+            ref('group_examenes_sinodal'),
+            ref('group_examenes_instructor'),
+            ref('group_examenes_admin'),
+        ])]"/>
+        <field name="code">action = model.action_abrir_tablero_sinodal()</field>
+    </record>
+
+</odoo>

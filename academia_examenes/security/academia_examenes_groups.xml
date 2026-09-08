@@ -15,6 +15,11 @@
         <field name="privilege_id" ref="privilege_academia_examenes"/>
     </record>
 
+    <record id="group_examenes_sinodal" model="res.groups">
+        <field name="name">Sinodal</field>
+        <field name="privilege_id" ref="privilege_academia_examenes"/>
+    </record>
+
     <record id="group_examenes_admin" model="res.groups">
         <field name="name">Administrador de Exámenes</field>
         <field name="privilege_id" ref="privilege_academia_examenes"/>

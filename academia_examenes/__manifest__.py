@@ -7,6 +7,7 @@
         'security/academia_examenes_groups.xml',
         'security/ir.model.access.csv',
         'data/ir_sequence_data.xml',
+        'data/sinodal_home_action.xml',
         'views/rubrica_plantilla_views.xml',
         'views/rubrica_alumno_views.xml',
         'views/rubrica_examen_views.xml',
