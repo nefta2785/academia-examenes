@@ -54,10 +54,11 @@
                             <h6 t-esc="criterio.nombre"/>
 
                             <div t-if="criterio.tipoEscala === 'cualitativa'"
-                                class="d-flex flex-wrap mb-2" style="gap: 10px;">
+                                class="mb-2" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                                 <button t-foreach="criterio.opciones" t-as="opcion" t-key="opcion"
                                     type="button"
-                                    t-att-class="'btn ' + (criterio.valorCualitativo === opcion ? 'btn-primary' : 'btn-outline-secondary')"
+                                    t-att-class="'btn btn-lg ' + (criterio.valorCualitativo === opcion ? 'btn-primary' : 'btn-outline-secondary')"
+                                    style="min-height: 44px; padding: 0.5rem 0.75rem; font-size: 1rem;"
                                     t-on-click="() => this.calificarCualitativo(criterio, opcion)"
                                     t-esc="opcion"/>
                                 <span t-if="!criterio.opciones.length" class="text-danger small">

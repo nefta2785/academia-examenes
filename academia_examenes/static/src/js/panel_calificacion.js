@@ -186,6 +186,18 @@ export class PanelCalificacion extends Component {
         const raw = criterio.valorNumerico;
         const valor = raw === "" || raw === null || raw === undefined ? 0 : parseFloat(raw);
         await this._persistirCriterio(criterio, { valor_numerico: valor });
+        await this._refrescarCalificacionFinal();
+    }
+
+    async _refrescarCalificacionFinal() {
+        // El promedio se recalcula en el servidor (compute de
+        // calificacion_final_manual), pero esta tarjeta ya cargó su estado
+        // antes de calificar. Sin este refresh, la pantalla se queda con el
+        // valor viejo aunque el dato en la base ya esté correcto.
+        const [examen] = await this.orm.read(
+            "rubrica.examen", [this.props.examenId], ["calificacion_final_manual"]
+        );
+        this.state.calificacionFinalManual = examen.calificacion_final_manual;
     }
 
     async guardarComentario(criterio) {

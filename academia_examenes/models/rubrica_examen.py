@@ -44,7 +44,23 @@ class RubricaExamen(models.Model):
         default='pendiente',
     )
     mejor_examen = fields.Boolean(string='Mejor Examen', default=False)
-    calificacion_final_manual = fields.Float(string='Calificación final')
+    calificacion_final_manual = fields.Float(
+        string='Calificación final',
+        compute='_compute_calificacion_final_manual',
+        inverse='_inverse_calificacion_final_manual',
+        store=True,
+        readonly=False,
+        help='Se calcula automáticamente como el promedio de los criterios '
+             'cuantitativos (numéricos) del examen. Los criterios cualitativos '
+             'no participan en este cálculo. El sinodal puede sobreescribir '
+             'este valor en cualquier momento; una vez editado a mano, deja '
+             'de recalcularse automáticamente.',
+    )
+    calificacion_final_editada_manualmente = fields.Boolean(
+        string='Calificación final editada manualmente',
+        default=False,
+        copy=False,
+    )
     notas_sinodal = fields.Text(string='Notas del sinodal')
     posicion_x = fields.Float(
         string='Posición X en la mesa', default=0.0, copy=False,
@@ -82,6 +98,30 @@ class RubricaExamen(models.Model):
     def _compute_ganancia_examen(self):
         for examen in self:
             examen.ganancia_examen = examen.costo_examen - examen.costo_sinodal - examen.costo_institucion
+
+    @api.depends('criterios_ids.valor_numerico', 'criterios_ids.criterio_plantilla_id.tipo_escala')
+    def _compute_calificacion_final_manual(self):
+        # Los criterios cualitativos quedan totalmente fuera del cálculo.
+        # Un criterio cuantitativo sin calificar ya vale 0.0 por default del
+        # modelo, así que cuenta como 0 en el promedio sin lógica extra.
+        for examen in self:
+            if examen.calificacion_final_editada_manualmente:
+                continue
+            criterios_cuantitativos = examen.criterios_ids.filtered(
+                lambda c: c.criterio_plantilla_id.tipo_escala == 'numerica'
+            )
+            if not criterios_cuantitativos:
+                continue
+            examen.calificacion_final_manual = (
+                sum(criterios_cuantitativos.mapped('valor_numerico')) / len(criterios_cuantitativos)
+            )
+
+    def _inverse_calificacion_final_manual(self):
+        # Se dispara solo cuando el sinodal escribe este campo explícitamente
+        # (desde la vista o desde panel_calificacion.js). A partir de aquí,
+        # el compute de arriba deja de tocar el valor para este examen.
+        for examen in self:
+            examen.calificacion_final_editada_manualmente = True
 
     @api.model_create_multi
     def create(self, vals_list):
