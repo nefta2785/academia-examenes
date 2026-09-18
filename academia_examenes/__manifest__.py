@@ -20,6 +20,7 @@
             'academia_examenes/static/src/js/tablero_calificacion.js',
             'academia_examenes/static/src/xml/panel_calificacion.xml',
             'academia_examenes/static/src/xml/tablero_calificacion.xml',
+            'academia_examenes/static/src/scss/tablero_calificacion.scss',
         ],
     },
     'installable': True,

@@ -10,6 +10,7 @@ import { PanelCalificacion } from "./panel_calificacion";
 // distintos sinodales/dispositivos.
 const ANCHO_TARJETA = 360;
 const ALTO_TARJETA = 140;      // huella aproximada de una tarjeta colapsada
+const ALTO_TARJETA_ABIERTA = 480;
 const ANCHO_LIENZO = 1400;
 const ALTO_LIENZO_MAX = 3000;
 const SEPARACION = 16;
@@ -228,7 +229,7 @@ export class TableroCalificacion extends Component {
             if (!p) {
                 continue;
             }
-            const alto = this.estaAbierta(id) ? 720 : ALTO_TARJETA;
+            const alto = this.estaAbierta(id) ? ALTO_TARJETA_ABIERTA : ALTO_TARJETA;
             maxAbajo = Math.max(maxAbajo, p.y + alto);
         }
         return Math.min(maxAbajo + 80, ALTO_LIENZO_MAX);

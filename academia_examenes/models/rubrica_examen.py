@@ -37,8 +37,8 @@ class RubricaExamen(models.Model):
     resultado = fields.Selection(
         selection=[
             ('aprobado', 'Aprobado'),
-            ('reprobado', 'Reprobado'),
             ('pendiente', 'Pendiente'),
+            ('reprobado', 'Reprobado'),
         ],
         string='Resultado',
         default='pendiente',

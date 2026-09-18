@@ -133,11 +133,13 @@
                                         t-on-click.stop="() => this.quitarDeMesa(examenId)">Quitar</button>
                                 </div>
 
-                                <PanelCalificacion t-if="estaAbierta(examenId)" t-key="examenId"
-                                    examenId="examenId"
-                                    onGuardado="(id) => this.onCriterioGuardado(id)"
-                                    onResultadoCambiado="(id, valor) => this.onResultadoCambiado(id, valor)"
-                                    onMejorExamenCambiado="(id, valor) => this.onMejorExamenCambiado(id, valor)"/>
+                                <div class="panel-calificacion-scroll">
+                                    <PanelCalificacion t-if="estaAbierta(examenId)" t-key="examenId"
+                                        examenId="examenId"
+                                        onGuardado="(id) => this.onCriterioGuardado(id)"
+                                        onResultadoCambiado="(id, valor) => this.onResultadoCambiado(id, valor)"
+                                        onMejorExamenCambiado="(id, valor) => this.onMejorExamenCambiado(id, valor)"/>
+                                </div>
                             </div>
                         </div>
                     </div>
